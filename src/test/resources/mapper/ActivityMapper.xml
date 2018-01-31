@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.ExportMapper">
+  <resultMap id="BaseResultMap" type="com.wzd.model.entity.Activity">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="deleted" jdbcType="INTEGER" property="deleted" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="start" jdbcType="TIMESTAMP" property="start" />
+    <result column="end" jdbcType="TIMESTAMP" property="end" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="total" jdbcType="INTEGER" property="total" />
+    <result column="current" jdbcType="INTEGER" property="current" />
+    <result column="pub_user" jdbcType="CHAR" property="pubUser" />
+    <result column="dep_id" jdbcType="INTEGER" property="depId" />
+    <result column="auditor" jdbcType="CHAR" property="auditor" />
+    <result column="aud_time" jdbcType="TIMESTAMP" property="audTime" />
+    <result column="audit" jdbcType="INTEGER" property="audit" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+  </resultMap>
+</mapper>

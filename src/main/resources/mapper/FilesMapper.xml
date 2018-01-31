@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.FilesMapper">
+	<resultMap id="BaseResultMap" type="com.wzd.model.entity.Files">
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="fk" jdbcType="CHAR" property="fk" />
+		<result column="suffix" jdbcType="VARCHAR" property="suffix" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+		<result column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="created" jdbcType="TIMESTAMP" property="created" />
+		<result column="deleted" jdbcType="INTEGER" property="deleted" />
+		<result column="num" jdbcType="INTEGER" property="num" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+	</resultMap>
+
+	<resultMap id="result_files" type="com.wzd.model.entity.Files">
+		<id property="id" column="files_id" />
+		<result property="name" column="files_name" />
+		<result property="url" column="files_url" />
+		<result property="fk" column="files_fk" />
+		<result property="suffix" column="files_suffix" />
+		<result property="userId" column="files_user_id" />
+		<result property="created" column="files_created" />
+		<result property="deleted" column="files_deleted" />
+		<result property="status" column="files_status" />
+		<result property="type" column="files_type" />
+		<result property="description" column="files_description" />
+		<result property="num" column="files_num" />
+	</resultMap>
+
+	<sql id="all_column_list" >
+		${alias}id AS files_id,
+		${alias}name AS files_name,
+		${alias}url AS files_url,
+		${alias}fk AS files_fk,
+		${alias}suffix AS files_suffix,
+		${alias}user_id AS files_user_id,
+		${alias}created AS files_created,
+		${alias}deleted AS files_deleted,
+		${alias}status AS files_status,
+		${alias}type AS files_type,
+		${alias}description AS files_description,
+		${alias}num AS files_num
+	</sql>
+
+	<sql id="insert_column_list" >
+		name,
+		url,
+		fk,
+		suffix,
+		user_id,
+		created,
+		deleted,
+		status,
+		type,
+		description,
+		num
+	</sql>
+
+	<sql id="value_column_list" >
+		#{name},
+		#{url},
+		#{fk},
+		#{suffix},
+		#{userId},
+		#{created},
+		#{deleted},
+		#{status},
+		#{type},
+		#{description},
+		#{num}
+	</sql>
+</mapper>

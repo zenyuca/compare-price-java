@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.wzd.model.entity.Admin">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="gender" jdbcType="CHAR" property="gender" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="weixinid" jdbcType="VARCHAR" property="weixinid" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="extattr" jdbcType="VARCHAR" property="extattr" />
+    <result column="departments" jdbcType="VARCHAR" property="departments" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="deleted" jdbcType="INTEGER" property="deleted" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+    <result column="auth" jdbcType="VARCHAR" property="auth" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="login" jdbcType="TIMESTAMP" property="login" />
+    <result column="audit" jdbcType="INTEGER" property="audit" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/task 
+       http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<context:component-scan base-package="com.wzd" />
+
+	<context:property-placeholder location="classpath:configs/jdbc.properties" />
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="filters" value="stat" />
+		<property name="maxActive" value="100" />
+		<property name="initialSize" value="1" />
+		<property name="maxWait" value="60000" />
+		<property name="minIdle" value="1" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 超过时间限制是否回收 -->  
+		<property name="removeAbandoned" value="true" />  
+		<!-- 超时时间；单位为秒。180秒=3分钟 -->  
+		<property name="removeAbandonedTimeout" value="180" />  
+		<!-- 关闭abanded连接时输出错误日志 -->  
+		<property name="logAbandoned" value="true" />   
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mapper/*.xml" />
+		<property name="typeAliasesPackage" value="com.wzd.model.entity" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<value>
+							helperDialect=mysql
+							reasonable=true
+							supportMethodsArguments=true
+							params=count=countSql
+							autoRuntimeDialect=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.wzd.model.mapper" />
+		<property name="markerInterface" value="com.wzd.model.mapper.MyMapper" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean class="com.wzd.service.task.TimerTask"/>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!-- 过滤器 -->
+	<bean id="SessionFilter" class="com.wzd.web.filter.SessionFilter" />
+	<!-- 定时任务 -->
+	<task:scheduler id="taskScheduler" pool-size="100" />
+<!-- 	<task:scheduled-tasks scheduler="taskScheduler"> -->
+		<!-- 每天2点0分0秒清理文件 -->
+<!-- 		<task:scheduled ref="task" method="deleteFile" cron="0 0 2 * * ?" /> -->
+<!-- 	</task:scheduled-tasks> -->
+
+</beans>

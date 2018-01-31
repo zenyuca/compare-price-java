@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.AdminMapper">
+	<resultMap id="BaseResultMap" type="com.wzd.web.dto.Admin">
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="linkman" jdbcType="VARCHAR" property="linkman" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="pwd" jdbcType="VARCHAR" property="pwd" />
+		<result column="wecatId" jdbcType="VARCHAR" property="wecatId" />
+		<result column="role" jdbcType="INTEGER" property="role" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="deleted" jdbcType="INTEGER" property="deleted" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+</mapper>

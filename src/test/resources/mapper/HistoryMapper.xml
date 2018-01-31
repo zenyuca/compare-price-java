@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.HistoryMapper">
+	<resultMap id="BaseResultMap" type="com.wzd.model.entity.History">
+		<!-- WARNING - @mbggenerated -->
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="welfare_id" jdbcType="CHAR" property="welfareId" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="ticket" jdbcType="CHAR" property="ticket" />
+		<result column="recording" jdbcType="TIMESTAMP" property="recording" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="deleled" jdbcType="INTEGER" property="deleled" />
+	</resultMap>
+	<resultMap id="SignDtoResultMap" type="com.wzd.web.dto.history.SignDto">
+		<result column="nickname" property="nickname" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="audit" property="audit" jdbcType="INTEGER" />
+		<result column="dep_name" property="dep_name" jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="INTEGER" />
+		<result column="recording" property="recording" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<select id="getSignList" resultMap="SignDtoResultMap">
+		select u.nickname,u.name,u.audit,d.name as
+		dep_name,h.score,h.recording
+		from history h left join user u on
+		h.user_id=u.id left join department d
+		on u.dep_id=d.id
+		<!-- <where>
+			<if test="name != null and name != ''">
+				u.name like concat('%',concat(#{name}, '%'))
+			</if>
+			<if test="nickname != null and nickname != ''">
+				and u.nickname like concat('%',concat(#{nickname},
+				'%'))
+			</if>
+		</where> -->
+		<if test="orderByClause != null and orderByClause != ''">
+			order by ${orderByClause}
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.WelfareMapper">
+	<resultMap id="BaseResultMap" type="com.wzd.model.entity.Welfare">
+		<!-- WARNING - @mbggenerated -->
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="time" jdbcType="INTEGER" property="time" />
+		<result column="provider" jdbcType="VARCHAR" property="provider" />
+		<result column="website" jdbcType="VARCHAR" property="website" />
+		<result column="wishing" jdbcType="VARCHAR" property="wishing" />
+		<result column="news" jdbcType="VARCHAR" property="news" />
+		<result column="text" jdbcType="VARCHAR" property="text" />
+		<result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="created" jdbcType="TIMESTAMP" property="created" />
+		<result column="total" jdbcType="INTEGER" property="total" />
+		<result column="current" jdbcType="INTEGER" property="current" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="deleted" jdbcType="INTEGER" property="deleted" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="admin_id" jdbcType="CHAR" property="adminId" />
+		<result column="rule" jdbcType="VARCHAR" property="rule" />
+	</resultMap>
+</mapper>

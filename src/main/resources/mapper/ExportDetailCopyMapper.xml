@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.ExportDetailCopyMapper">
+	<resultMap id="BaseResultMap" type="com.wzd.web.dto.ExportDetailCopy">
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="num" property="num" />
+		<result column="exportId" property="exportId" />
+		<result column="name" property="name" />
+		<result column="category" property="category" />
+		<result column="spec" property="spec" />
+		<result column="unit" property="unit" />
+		<result column="business" property="business" />
+		<result column="unitPrice" property="unitPrice" />
+		<result column="number" property="number" />
+		<result column="level" property="level" />
+		<result column="spec2" property="spec2" />
+		<result column="barCode" property="barCode" />
+		<result column="manufacturer" property="manufacturer" />
+		<result column="placeOfOrigin" property="placeOfOrigin" />
+		<result column="remark" property="remark" />
+		<result column="serialNumber" property="serialNumber" />
+		<result column="url" property="url" />
+		<result column="type" property="type" />
+	</resultMap>
+</mapper>
