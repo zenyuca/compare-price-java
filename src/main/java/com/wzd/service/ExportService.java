@@ -64,6 +64,7 @@ public class ExportService {
         Map<String,Object> result = new HashMap<>();
         result.put("exportId",exports.get(0).getId());
         result.put("downUrl",exports.get(0).getUrl());
+        result.put("endTime",exports.get(0).getEndTime());
         result.put("data",detailCopyDao.selectByExample(example));
         return result;
     }

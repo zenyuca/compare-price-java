@@ -48,6 +48,15 @@ public class ExportDetail implements Serializable {
     private String agentName;
     @Column(name="agentId")
     private String agentId;
+    private Date endTime;
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getId() {
         return id;
