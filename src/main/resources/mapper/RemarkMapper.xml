@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzd.model.mapper.RemarkMapper">
+	<resultMap id="BaseResultMap" type="com.wzd.web.dto.Remark">
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="agentId" jdbcType="VARCHAR" property="agentId" />
+		<result column="content" jdbcType="VARCHAR" property="content" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+	</resultMap>
+</mapper>

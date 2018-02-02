@@ -85,7 +85,8 @@ public class ExportService {
         if (exports == null || exports.size() < 1)return null;
         String[] headers = new String[] { "序号@num", "名称@name", "规格@spec", "数量@number",
                 "单价@unitPrice", "供应商名称@agentName", "菜品要求@business","实物图片@url","备注@remark" };
-        return PoiExcelUtils.createExcel2FilePath("招标结果列表", "招标结果列表", FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId()));
+        String url = PoiExcelUtils.createExcel2FilePath("招标结果列表", "招标结果列表", FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId()));
+        return url;
     }
 
     public Object importExcel(Export export, HttpServletRequest request) {

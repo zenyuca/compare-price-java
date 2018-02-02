@@ -1,6 +1,9 @@
 package com.wzd.service;
 
 import com.wzd.model.enums.RoleType;
+import com.wzd.model.mapper.RemarkMapper;
+import com.wzd.utils.UUIDUtil;
+import com.wzd.web.dto.Remark;
 import com.wzd.web.dto.exception.WebException;
 import com.wzd.web.dto.response.ResponseCode;
 import com.wzd.web.dto.session.Session;
@@ -22,15 +25,18 @@ import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
 public class AdminService {
     @Autowired
     private AdminDao adminDao;
+    @Autowired
+    private RemarkMapper remarkMapper;
 
     public Session login(Admin admin, HttpServletRequest request, HttpServletResponse response) {
-        Admin dbAdmin  = new Admin();
+        Admin dbAdmin = new Admin();
         dbAdmin.setName(admin.getName());
         dbAdmin = adminDao.selectOne(dbAdmin);
         if (dbAdmin == null) {
@@ -47,33 +53,51 @@ public class AdminService {
     }
 
     public List<Admin> findAgent(Admin admin) {
-        if (!RoleType.管理员.getValue().equals(admin.getRole()))
-            throw new WebException(ResponseCode.当前登录人权限不足);
+//        if (!RoleType.管理员.getValue().equals(admin.getRole()))
+//            throw new WebException(ResponseCode.当前登录人权限不足);
         Example example = new Example(Admin.class);
         return adminDao.selectByExample(example);
     }
 
-    public void addAgent(Admin admin,Admin a) {
+    public void addAgent(Admin admin, Admin a) {
         if (!RoleType.管理员.getValue().equals(a.getRole()))
             throw new WebException(ResponseCode.当前登录人权限不足);
         adminDao.insertSelective(admin);
     }
 
-    public void delAgent(String id,Admin admin) {
+    public void delAgent(String id, Admin admin) {
         if (!RoleType.管理员.getValue().equals(admin.getRole()))
             throw new WebException(ResponseCode.当前登录人权限不足);
-        if (StringUtils.isBlank(id))throw new WebException(ResponseCode.数据参数异常);
+        if (StringUtils.isBlank(id)) throw new WebException(ResponseCode.数据参数异常);
         Example example = new Example(Admin.class);
         example.createCriteria().andEqualTo("id", id);
         adminDao.deleteByExample(example);
     }
 
-    public void updateAgent(Admin admin,Admin a) {
+    public void updateAgent(Admin admin, Admin a) {
         if (!RoleType.管理员.getValue().equals(a.getRole()))
             throw new WebException(ResponseCode.当前登录人权限不足);
-        if (StringUtils.isBlank(admin.getId()))throw new WebException(ResponseCode.数据参数异常);
+        if (StringUtils.isBlank(admin.getId())) throw new WebException(ResponseCode.数据参数异常);
         Example example = new Example(Admin.class);
         example.createCriteria().andEqualTo("id", admin.getId());
         adminDao.updateByExampleSelective(admin, example);
+    }
+
+    public void addRemark(Remark remark, Admin admin) {
+        remark.setId(UUIDUtil.get());
+        remarkMapper.insertSelective(remark);
+    }
+
+    public List<Remark> findRemarkById(String id, Admin admin) {
+        Example example = new Example(Remark.class);
+        example.setOrderByClause("createTime DESC");
+        example.createCriteria().andEqualTo("agentId", id);
+        return remarkMapper.selectByExample(example);
+    }
+
+    public void delRemarkById(String id, Admin admin) {
+        Example example = new Example(Remark.class);
+        example.createCriteria().andEqualTo("id", id);
+        remarkMapper.deleteByExample(example);
     }
 }
