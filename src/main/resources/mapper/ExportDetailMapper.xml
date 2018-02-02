@@ -27,10 +27,13 @@
 
 	<select id="findTenderResult" resultMap="BaseResultMap">
 		SELECT
-			a.*
+			a.*,
+			b.endTime
 		FROM
-			bj_export_detail a
+			bj_export_detail a,
+			bj_export b
 		WHERE
+			b.id = #{exportId} and 
 			exportId = #{exportId} AND a.agentId is not null <![CDATA[ AND a.agentId <>  '' ]]>
 			AND unitPrice = ( SELECT min( unitPrice ) FROM bj_export_detail WHERE num = a.num )
 		GROUP BY a.num
