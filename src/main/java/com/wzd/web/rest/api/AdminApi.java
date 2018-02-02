@@ -2,6 +2,7 @@ package com.wzd.web.rest.api;
 
 import com.wzd.service.AdminService;
 import com.wzd.web.dto.Admin;
+import com.wzd.web.dto.Configure;
 import com.wzd.web.dto.Remark;
 import com.wzd.web.dto.session.Session;
 import com.wzd.web.dto.session.SessionUtil;
@@ -83,6 +84,18 @@ public class AdminApi {
 	@Path("/del/remark/{id}")
 	public void delRemarkById(@PathParam("id")String id, @Context HttpServletRequest request) {
 		service.delRemarkById(id,(Admin) SessionUtil.getUser(request));
+	}
+
+	@POST
+	@Path("/add/configure")
+	public void addConfigure(Configure configure, @Context HttpServletRequest request) {
+		service.addConfigure(configure,(Admin) SessionUtil.getUser(request));
+	}
+
+	@GET
+	@Path("/get/configure/{type}")
+	public Configure getConfigure(@PathParam("type")Integer type, @Context HttpServletRequest request) {
+		return service.getConfigure(type,(Admin) SessionUtil.getUser(request));
 	}
 
 }

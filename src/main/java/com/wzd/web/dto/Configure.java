@@ -10,15 +10,11 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="bj_remark")
-public class Remark implements Serializable{
+@Table(name="bj_configure")
+public class Configure implements Serializable{
 	private String id; // ID
-	@Column(name = "agentId")
-	private String agentId;
+	private Integer type;
 	private String content;
-	private String url;
-	@Column(name = "createTime")
-	private Date createTime;
 
 	public String getId() {
 		return id;
@@ -28,12 +24,12 @@ public class Remark implements Serializable{
 		this.id = id;
 	}
 
-	public String getAgentId() {
-		return agentId;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setAgentId(String agentId) {
-		this.agentId = agentId;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public String getContent() {
@@ -42,22 +38,6 @@ public class Remark implements Serializable{
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
 	}
 
 	@Override

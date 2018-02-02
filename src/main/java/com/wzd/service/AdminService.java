@@ -1,8 +1,10 @@
 package com.wzd.service;
 
 import com.wzd.model.enums.RoleType;
+import com.wzd.model.mapper.ConfigureMapper;
 import com.wzd.model.mapper.RemarkMapper;
 import com.wzd.utils.UUIDUtil;
+import com.wzd.web.dto.Configure;
 import com.wzd.web.dto.Remark;
 import com.wzd.web.dto.exception.WebException;
 import com.wzd.web.dto.response.ResponseCode;
@@ -24,6 +26,7 @@ import tk.mybatis.mapper.entity.Example;
 import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +37,8 @@ public class AdminService {
     private AdminDao adminDao;
     @Autowired
     private RemarkMapper remarkMapper;
+    @Autowired
+    private ConfigureMapper configureMapper;
 
     public Session login(Admin admin, HttpServletRequest request, HttpServletResponse response) {
         Admin dbAdmin = new Admin();
@@ -85,6 +90,7 @@ public class AdminService {
 
     public void addRemark(Remark remark, Admin admin) {
         remark.setId(UUIDUtil.get());
+        remark.setCreateTime(new Date());
         remarkMapper.insertSelective(remark);
     }
 
@@ -99,5 +105,21 @@ public class AdminService {
         Example example = new Example(Remark.class);
         example.createCriteria().andEqualTo("id", id);
         remarkMapper.deleteByExample(example);
+    }
+
+    public void addConfigure(Configure configure, Admin admin) {
+        Example example = new Example(Configure.class);
+        example.createCriteria().andEqualTo("type", configure.getType());
+        Integer i = configureMapper.updateByExampleSelective(configure, example);
+        if (i < 1) {
+            configure.setId(UUIDUtil.get());
+            configureMapper.insertSelective(configure);
+        }
+    }
+
+    public Configure getConfigure(Integer type, Admin admin) {
+        Configure configure = new Configure();
+        configure.setType(type);
+        return configureMapper.selectOne(configure);
     }
 }

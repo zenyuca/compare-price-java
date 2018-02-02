@@ -24,6 +24,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class FileService {
         InputStream file = filePart.getValueAs(InputStream.class);
         FormDataContentDisposition disposition = filePart.getFormDataContentDisposition();
         Files f = FileUtil.writeFile(file, disposition);
-        f.setType(FileType.上传图片.getValue());
+//        f.setType(FileType.上传图片.getValue());
         f.setDeleted(DeleteType.永久删除.getValue());
         dao.create(f);
         log.debug("上传文件成功:" + f);
@@ -58,11 +59,13 @@ public class FileService {
 
     public void update(Files files) {
         files.setDeleted(DeleteType.未删除);
+        files.setType(FileType.上传图片.getValue());
         dao.update(files);
     }
 
     public PageInfo<Files> find(PageParam pageParam) {
         Example example = new Example(Files.class);
+        example.setOrderByClause("created DESC");
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("type", FileType.上传图片.getValue())
                 .andEqualTo("deleted", DeleteType.未删除.getValue());
