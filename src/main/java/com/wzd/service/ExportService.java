@@ -52,40 +52,40 @@ public class ExportService {
         return null;
     }
 
-    public Map findDetailCopyByType (Integer type) {
+    public Map findDetailCopyByType(Integer type) {
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
-        example.createCriteria().andEqualTo("type",type);
+        example.createCriteria().andEqualTo("type", type);
         List<Export> exports = exportDao.selectByExample(example);
-        if (exports == null || exports.size() < 1)return null;
+        if (exports == null || exports.size() < 1) return null;
         example = new Example(ExportDetailCopy.class);
         example.setOrderByClause("num ASC");
-        example.createCriteria().andEqualTo("exportId",exports.get(0).getId());
-        Map<String,Object> result = new HashMap<>();
-        result.put("exportId",exports.get(0).getId());
-        result.put("downUrl",exports.get(0).getUrl());
-        result.put("endTime",exports.get(0).getEndTime());
-        result.put("data",detailCopyDao.selectByExample(example));
+        example.createCriteria().andEqualTo("exportId", exports.get(0).getId());
+        Map<String, Object> result = new HashMap<>();
+        result.put("exportId", exports.get(0).getId());
+        result.put("downUrl", exports.get(0).getUrl());
+        result.put("endTime", exports.get(0).getEndTime());
+        result.put("data", detailCopyDao.selectByExample(example));
         return result;
     }
 
-    public List<ExportDetail> findTenderResult (Integer type) {
+    public List<ExportDetail> findTenderResult(Integer type) {
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
-        example.createCriteria().andEqualTo("type",type);
+        example.createCriteria().andEqualTo("type", type);
         List<Export> exports = exportDao.selectByExample(example);
-        if (exports == null || exports.size() < 1)return null;
+        if (exports == null || exports.size() < 1) return null;
         return detailDao.findTenderResult(exports.get(0).getId());
     }
 
-    public String exportTenderResult (Integer type) {
+    public String exportTenderResult(Integer type) {
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
-        example.createCriteria().andEqualTo("type",type);
+        example.createCriteria().andEqualTo("type", type);
         List<Export> exports = exportDao.selectByExample(example);
-        if (exports == null || exports.size() < 1)return null;
-        String[] headers = new String[] { "序号@num", "名称@name", "规格@spec", "数量@number",
-                "单价@unitPrice", "供应商名称@agentName", "菜品要求@business","实物图片@url","备注@remark" };
+        if (exports == null || exports.size() < 1) return null;
+        String[] headers = new String[]{"序号@num", "名称@name", "规格@spec", "数量@number",
+                "单价@unitPrice", "供应商名称@agentName", "菜品要求@business", "实物图片@url", "备注@remark"};
         String url = PoiExcelUtils.createExcel2FilePath("招标结果列表", "招标结果列表", FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId()));
         return url;
     }
@@ -127,6 +127,7 @@ public class ExportService {
                         }
                     } else {
                         for (int k = 0; k < header.size(); k++) {
+                            if (row == null) break;
                             HSSFCell cell = row.getCell(k);
                             if (row.getCell(k) != null && cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {// 如果为数字
                                 DecimalFormat df = new DecimalFormat("0");
@@ -135,14 +136,14 @@ public class ExportService {
                                 map.put(header.get(k), cell.toString());
                             }
                             if (cell == null) continue;
-                            if (export.getType() == 1)this.setDataByTypeCopy1(k,detailCopy,cell);//蔬菜类数据组装
-                            if (export.getType() == 2)this.setDataByTypeCopy2(k,detailCopy,cell);//肉类数据组装
-                            if (export.getType() == 3)this.setDataByTypeCopy3(k,detailCopy,cell);//干杂类数据组装
-                            if (export.getType() == 4)this.setDataByTypeCopy4(k,detailCopy,cell);//水产类数据组装
+                            if (export.getType() == 1) this.setDataByTypeCopy1(k, detailCopy, cell);//蔬菜类数据组装
+                            if (export.getType() == 2) this.setDataByTypeCopy2(k, detailCopy, cell);//肉类数据组装
+                            if (export.getType() == 3) this.setDataByTypeCopy3(k, detailCopy, cell);//干杂类数据组装
+                            if (export.getType() == 4) this.setDataByTypeCopy4(k, detailCopy, cell);//水产类数据组装
                         }
                         data.add(map);
                     }
-                    if (j == 1)continue;
+                    if (j == 1|| detailCopy.getNum() == null) continue;
                     list.add(detailCopy);
                 }
             }
@@ -155,13 +156,13 @@ public class ExportService {
     }
 
 
-    public Object importTenderExcel(Integer type,String exportId,FormDataMultiPart form, HttpServletRequest request) {
+    public Object importTenderExcel(Integer type, String exportId, FormDataMultiPart form, HttpServletRequest request) {
         Admin admin = (Admin) SessionUtil.getUser(request);
         if (type == null || StringUtils.isBlank(exportId)) {
-            throw new WebException(ResponseCode.数据参数异常,"传入类型或导入id不存在");
+            throw new WebException(ResponseCode.数据参数异常, "传入类型或导入id不存在");
         }
         Example example = new Example(ExportDetail.class);
-        example.createCriteria().andEqualTo("exportId",exportId);
+        example.createCriteria().andEqualTo("exportId", exportId);
 //        detailDao.deleteByExample(example);// 删除之前存在的，对应exportId
         FormDataBodyPart filePart = form.getField("file");
         if (form.getField("type") != null) {
@@ -196,6 +197,7 @@ public class ExportService {
                         }
                     } else {
                         for (int k = 0; k < header.size(); k++) {
+                            if (row == null) break;
                             HSSFCell cell = row.getCell(k);
                             if (row.getCell(k) != null && cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {// 如果为数字
                                 DecimalFormat df = new DecimalFormat("0");
@@ -204,14 +206,14 @@ public class ExportService {
                                 map.put(header.get(k), cell.toString());
                             }
                             if (cell == null) continue;
-                            if (type == 1)this.setDataByType1(k,detail,cell);//蔬菜类数据组装
-                            if (type == 2)this.setDataByType2(k,detail,cell);//肉类数据组装
-                            if (type == 3)this.setDataByType3(k,detail,cell);//干杂类数据组装
-                            if (type == 4)this.setDataByType4(k,detail,cell);//水产类数据组装
+                            if (type == 1) this.setDataByType1(k, detail, cell);//蔬菜类数据组装
+                            if (type == 2) this.setDataByType2(k, detail, cell);//肉类数据组装
+                            if (type == 3) this.setDataByType3(k, detail, cell);//干杂类数据组装
+                            if (type == 4) this.setDataByType4(k, detail, cell);//水产类数据组装
                         }
                         data.add(map);
                     }
-                    if (j == 1)continue;
+                    if (j == 1 || detail.getNum() == null) continue;
                     list.add(detail);
                 }
             }
@@ -229,7 +231,7 @@ public class ExportService {
     /**
      * 蔬菜类
      */
-    public void setDataByType1(Integer k,ExportDetail detail,HSSFCell cell){
+    public void setDataByType1(Integer k, ExportDetail detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
@@ -256,7 +258,7 @@ public class ExportService {
     /**
      * 肉类
      */
-    public void setDataByType2(Integer k,ExportDetail detail,HSSFCell cell){
+    public void setDataByType2(Integer k, ExportDetail detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
@@ -283,13 +285,13 @@ public class ExportService {
     /**
      * 干杂类
      */
-    public void setDataByType3(Integer k,ExportDetail detail,HSSFCell cell){
+    public void setDataByType3(Integer k, ExportDetail detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
         }
-        if (k == 1) detail.setName(cell.toString());
-        if (k == 2) detail.setCategory(cell.toString());
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
         if (k == 3) detail.setSpec(cell.toString());
         if (k == 4) detail.setUnit(cell.toString());
         if (k == 5) detail.setBusiness(cell.toString());
@@ -316,7 +318,7 @@ public class ExportService {
     /**
      * 水产类
      */
-    public void setDataByType4(Integer k,ExportDetail detail,HSSFCell cell){
+    public void setDataByType4(Integer k, ExportDetail detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
@@ -349,7 +351,7 @@ public class ExportService {
     /**
      * 蔬菜类
      */
-    public void setDataByTypeCopy1(Integer k,ExportDetailCopy detail,HSSFCell cell){
+    public void setDataByTypeCopy1(Integer k, ExportDetailCopy detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
@@ -376,7 +378,7 @@ public class ExportService {
     /**
      * 肉类
      */
-    public void setDataByTypeCopy2(Integer k,ExportDetailCopy detail,HSSFCell cell){
+    public void setDataByTypeCopy2(Integer k, ExportDetailCopy detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
@@ -403,7 +405,7 @@ public class ExportService {
     /**
      * 干杂类
      */
-    public void setDataByTypeCopy3(Integer k,ExportDetailCopy detail,HSSFCell cell){
+    public void setDataByTypeCopy3(Integer k, ExportDetailCopy detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
@@ -436,7 +438,7 @@ public class ExportService {
     /**
      * 水产类
      */
-    public void setDataByTypeCopy4(Integer k,ExportDetailCopy detail,HSSFCell cell){
+    public void setDataByTypeCopy4(Integer k, ExportDetailCopy detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
             detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));

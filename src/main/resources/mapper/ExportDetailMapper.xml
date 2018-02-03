@@ -35,7 +35,7 @@
 		WHERE
 			b.id = #{exportId} and 
 			exportId = #{exportId} AND a.agentId is not null <![CDATA[ AND a.agentId <>  '' ]]>
-			AND unitPrice = ( SELECT min( unitPrice ) FROM bj_export_detail WHERE num = a.num )
+			AND unitPrice = ( SELECT min( unitPrice ) FROM bj_export_detail WHERE num = a.num AND exportId = #{exportId})
 		GROUP BY a.num
 		ORDER BY
 			a.num

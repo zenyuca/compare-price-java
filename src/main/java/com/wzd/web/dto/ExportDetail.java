@@ -48,9 +48,11 @@ public class ExportDetail implements Serializable {
     private String agentName;
     @Column(name="agentId")
     private String agentId;
-    private Date endTime;
     private String remarks1;//备用字段
     private String remarks2;//备用字段
+
+    @Transient
+    private Date endTime;
 
     public Date getEndTime() {
         return endTime;
