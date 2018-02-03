@@ -49,6 +49,8 @@ public class ExportDetail implements Serializable {
     @Column(name="agentId")
     private String agentId;
     private Date endTime;
+    private String remarks1;//备用字段
+    private String remarks2;//备用字段
 
     public Date getEndTime() {
         return endTime;
@@ -160,6 +162,22 @@ public class ExportDetail implements Serializable {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public String getRemarks1() {
+        return remarks1;
+    }
+
+    public void setRemarks1(String remarks1) {
+        this.remarks1 = remarks1;
+    }
+
+    public String getRemarks2() {
+        return remarks2;
+    }
+
+    public void setRemarks2(String remarks2) {
+        this.remarks2 = remarks2;
     }
 
     public String getSpec2() {

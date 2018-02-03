@@ -15,31 +15,33 @@ public class ExportDetailCopy implements Serializable {
     @Column(name = "exportId")
     private String exportId;
 
-    private Integer num;
-    private String name;
-    private String category;
-    private String spec;
-    private String unit;
-    private String business;
+    private Integer num;//序号
+    private String name;//名称
+    private String category;//类别
+    private String spec;//规格
+    private String unit;//单位
+    private String business;//供应商
     @Column(name = "unitPrice")
-    private double unitPrice;
+    private double unitPrice;//单价
     @Column(name = "number")
-    private Integer number;
-    private String level;
+    private Integer number;//数量
+    private String level;//等级
     @Column(name = "spec2")
-    private String spec2;
+    private String spec2;//出厂规格
     @Column(name = "barCode")
-    private String barCode;
+    private String barCode;//产品条码
     @Column(name = "manufacturer")
-    private String manufacturer;
+    private String manufacturer;//生产厂家
     @Column(name = "placeOfOrigin")
-    private String placeOfOrigin;
+    private String placeOfOrigin;//出产地
     @Column(name = "remark")
-    private String remark;
-    @Column(name = "serialNumber")
+    private String remark;//备注
+    @Column(name = "serialNumber")//食堂内部编号
     private String serialNumber;
-    private String url;
-    private Integer type;
+    private String url;//图片地址
+    private Integer type;//类型
+    private String remarks1;//备用字段
+    private String remarks2;//备用字段
 
     public String getId() {
         return id;
@@ -191,6 +193,22 @@ public class ExportDetailCopy implements Serializable {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getRemarks1() {
+        return remarks1;
+    }
+
+    public void setRemarks1(String remarks1) {
+        this.remarks1 = remarks1;
+    }
+
+    public String getRemarks2() {
+        return remarks2;
+    }
+
+    public void setRemarks2(String remarks2) {
+        this.remarks2 = remarks2;
     }
 
     @Override

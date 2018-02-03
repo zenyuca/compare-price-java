@@ -100,17 +100,6 @@ public class ExportService {
         } catch (Exception e) {
 
         }
-//        FormDataBodyPart filePart = form.getField("file");
-//        Integer type = null;
-//        if (form.getField("type") != null) {
-//            type = form.getField("type").getValueAs(Integer.class);
-//        }
-//        InputStream inputStream = filePart.getValueAs(InputStream.class);
-//        FormDataContentDisposition disposition = filePart.getFormDataContentDisposition();
-//        InputStream file = filePart.getValueAs(InputStream.class);
-//        Files f = FileUtil.writeFile(file, disposition);
-//        Export export = new Export();
-//        export.setUrl(f.getUrl());
         export.setUrl(files.getUrl());
         export.setStartTime(new Date());
         exportDao.create(export);
@@ -146,60 +135,10 @@ public class ExportService {
                                 map.put(header.get(k), cell.toString());
                             }
                             if (cell == null) continue;
-                            if (k == 0) {
-                                DecimalFormat df = new DecimalFormat("0");
-                                detailCopy.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
-                            }
-                            if (k == 1) detailCopy.setName(cell.toString());
-                            if (k == 2) detailCopy.setCategory(cell.toString());
-                            if (k == 3) detailCopy.setSpec(cell.toString());
-                            if (k == 4) detailCopy.setUnit(cell.toString());
-                            if (k == 5) detailCopy.setBusiness(cell.toString());
-//                            if (k == 6) {
-//                                DecimalFormat df = new DecimalFormat("0");
-//                                detailCopy.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
-//                            }
-//                            if (k == 7) {
-//                                DecimalFormat df = new DecimalFormat("0");
-//                                detailCopy.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
-//                            }
-                            if (k == 8) detailCopy.setLevel(cell.toString());
-                            if (k == 9) detailCopy.setSpec2(cell.toString());
-                            if (k == 10) detailCopy.setBarCode(cell.toString());
-                            if (k == 11) detailCopy.setManufacturer(cell.toString());
-                            if (k == 12) detailCopy.setPlaceOfOrigin(cell.toString());
-                            if (k == 12) detailCopy.setRemark(cell.toString());
-                            if (k == 12) detailCopy.setSerialNumber(cell.toString());
-                            if (k == 12) detailCopy.setUrl(cell.toString());
-//                            if (null != cell) {
-//                                switch (cell.getCellType()) {
-//                                    case HSSFCell.CELL_TYPE_NUMERIC: // 数字
-//                                        DecimalFormat df = new DecimalFormat("0");
-//                                        System.err.print(df.format(cell.getNumericCellValue())
-//                                                + "   ");
-//                                        break;
-//                                    case HSSFCell.CELL_TYPE_STRING: // 字符串
-//                                        System.out.print(cell.getStringCellValue()
-//                                                + "   ");
-//                                        break;
-//                                    case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
-//                                        System.out.println(cell.getBooleanCellValue()
-//                                                + "   ");
-//                                        break;
-//                                    case HSSFCell.CELL_TYPE_FORMULA: // 公式
-//                                        System.out.print(cell.getCellFormula() + "   ");
-//                                        break;
-//                                    case HSSFCell.CELL_TYPE_BLANK: // 空值
-//                                        System.out.println(" ");
-//                                        break;
-//                                    case HSSFCell.CELL_TYPE_ERROR: // 故障
-//                                        System.out.println(" ");
-//                                        break;
-//                                    default:
-//                                        System.out.print("未知类型   ");
-//                                        break;
-//                                }
-//                            }
+                            if (export.getType() == 1)this.setDataByTypeCopy1(k,detailCopy,cell);//蔬菜类数据组装
+                            if (export.getType() == 2)this.setDataByTypeCopy2(k,detailCopy,cell);//肉类数据组装
+                            if (export.getType() == 3)this.setDataByTypeCopy3(k,detailCopy,cell);//干杂类数据组装
+                            if (export.getType() == 4)this.setDataByTypeCopy4(k,detailCopy,cell);//水产类数据组装
                         }
                         data.add(map);
                     }
@@ -216,7 +155,6 @@ public class ExportService {
     }
 
 
-    //select a.* from bj_export_detail_copy a where unitPrice = (select min(unitPrice) from bj_export_detail_copy where name = a.name) order by a.name
     public Object importTenderExcel(Integer type,String exportId,FormDataMultiPart form, HttpServletRequest request) {
         Admin admin = (Admin) SessionUtil.getUser(request);
         if (type == null || StringUtils.isBlank(exportId)) {
@@ -266,31 +204,10 @@ public class ExportService {
                                 map.put(header.get(k), cell.toString());
                             }
                             if (cell == null) continue;
-                            if (k == 0) {
-                                DecimalFormat df = new DecimalFormat("0");
-                                detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
-                            }
-                            if (k == 1) detail.setName(cell.toString());
-                            if (k == 2) detail.setCategory(cell.toString());
-                            if (k == 3) detail.setSpec(cell.toString());
-                            if (k == 4) detail.setUnit(cell.toString());
-                            if (k == 5) detail.setBusiness(cell.toString());
-                            if (k == 6) {
-                                DecimalFormat df = new DecimalFormat("0");
-                                detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
-                            }
-                            if (k == 7) {
-                                DecimalFormat df = new DecimalFormat("0");
-                                detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
-                            }
-                            if (k == 8) detail.setLevel(cell.toString());
-                            if (k == 9) detail.setSpec2(cell.toString());
-                            if (k == 10) detail.setBarCode(cell.toString());
-                            if (k == 11) detail.setManufacturer(cell.toString());
-                            if (k == 12) detail.setPlaceOfOrigin(cell.toString());
-                            if (k == 12) detail.setRemark(cell.toString());
-                            if (k == 12) detail.setSerialNumber(cell.toString());
-                            if (k == 12) detail.setUrl(cell.toString());
+                            if (type == 1)this.setDataByType1(k,detail,cell);//蔬菜类数据组装
+                            if (type == 2)this.setDataByType2(k,detail,cell);//肉类数据组装
+                            if (type == 3)this.setDataByType3(k,detail,cell);//干杂类数据组装
+                            if (type == 4)this.setDataByType4(k,detail,cell);//水产类数据组装
                         }
                         data.add(map);
                     }
@@ -308,4 +225,245 @@ public class ExportService {
 //		payroll.setHeader(header);
         return null;
     }
+
+    /**
+     * 蔬菜类
+     */
+    public void setDataByType1(Integer k,ExportDetail detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setRemark(cell.toString());
+        if (k == 9) detail.setUrl(cell.toString());
+        if (k == 10) detail.setRemarks1(cell.toString());
+        if (k == 11) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 肉类
+     */
+    public void setDataByType2(Integer k,ExportDetail detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setRemark(cell.toString());
+        if (k == 9) detail.setUrl(cell.toString());
+        if (k == 10) detail.setRemarks1(cell.toString());
+        if (k == 11) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 干杂类
+     */
+    public void setDataByType3(Integer k,ExportDetail detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setName(cell.toString());
+        if (k == 2) detail.setCategory(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setLevel(cell.toString());
+        if (k == 9) detail.setSpec2(cell.toString());
+        if (k == 10) detail.setBarCode(cell.toString());
+        if (k == 11) detail.setManufacturer(cell.toString());
+        if (k == 12) detail.setPlaceOfOrigin(cell.toString());
+        if (k == 13) detail.setRemark(cell.toString());
+        if (k == 14) detail.setSerialNumber(cell.toString());
+        if (k == 15) detail.setUrl(cell.toString());
+        if (k == 16) detail.setRemarks1(cell.toString());
+        if (k == 17) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 水产类
+     */
+    public void setDataByType4(Integer k,ExportDetail detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setLevel(cell.toString());
+        if (k == 9) detail.setSpec2(cell.toString());
+        if (k == 10) detail.setBarCode(cell.toString());
+        if (k == 11) detail.setManufacturer(cell.toString());
+        if (k == 12) detail.setPlaceOfOrigin(cell.toString());
+        if (k == 13) detail.setRemark(cell.toString());
+        if (k == 14) detail.setSerialNumber(cell.toString());
+        if (k == 15) detail.setUrl(cell.toString());
+        if (k == 16) detail.setRemarks1(cell.toString());
+        if (k == 17) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 蔬菜类
+     */
+    public void setDataByTypeCopy1(Integer k,ExportDetailCopy detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setRemark(cell.toString());
+        if (k == 9) detail.setUrl(cell.toString());
+        if (k == 10) detail.setRemarks1(cell.toString());
+        if (k == 11) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 肉类
+     */
+    public void setDataByTypeCopy2(Integer k,ExportDetailCopy detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setRemark(cell.toString());
+        if (k == 9) detail.setUrl(cell.toString());
+        if (k == 10) detail.setRemarks1(cell.toString());
+        if (k == 11) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 干杂类
+     */
+    public void setDataByTypeCopy3(Integer k,ExportDetailCopy detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setName(cell.toString());
+        if (k == 2) detail.setCategory(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setLevel(cell.toString());
+        if (k == 9) detail.setSpec2(cell.toString());
+        if (k == 10) detail.setBarCode(cell.toString());
+        if (k == 11) detail.setManufacturer(cell.toString());
+        if (k == 12) detail.setPlaceOfOrigin(cell.toString());
+        if (k == 13) detail.setRemark(cell.toString());
+        if (k == 14) detail.setSerialNumber(cell.toString());
+        if (k == 15) detail.setUrl(cell.toString());
+        if (k == 16) detail.setRemarks1(cell.toString());
+        if (k == 17) detail.setRemarks2(cell.toString());
+    }
+
+    /**
+     * 水产类
+     */
+    public void setDataByTypeCopy4(Integer k,ExportDetailCopy detail,HSSFCell cell){
+        if (k == 0) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 1) detail.setCategory(cell.toString());
+        if (k == 2) detail.setName(cell.toString());
+        if (k == 3) detail.setSpec(cell.toString());
+        if (k == 4) detail.setUnit(cell.toString());
+        if (k == 5) detail.setBusiness(cell.toString());
+        if (k == 6) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 7) {
+            DecimalFormat df = new DecimalFormat("0");
+            detail.setNumber(Integer.parseInt(df.format(cell.getNumericCellValue())));
+        }
+        if (k == 8) detail.setLevel(cell.toString());
+        if (k == 9) detail.setSpec2(cell.toString());
+        if (k == 10) detail.setBarCode(cell.toString());
+        if (k == 11) detail.setManufacturer(cell.toString());
+        if (k == 12) detail.setPlaceOfOrigin(cell.toString());
+        if (k == 13) detail.setRemark(cell.toString());
+        if (k == 14) detail.setSerialNumber(cell.toString());
+        if (k == 15) detail.setUrl(cell.toString());
+        if (k == 16) detail.setRemarks1(cell.toString());
+        if (k == 17) detail.setRemarks2(cell.toString());
+    }
+
 }

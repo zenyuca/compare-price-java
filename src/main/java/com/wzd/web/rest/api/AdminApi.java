@@ -77,7 +77,7 @@ public class AdminApi {
 	@GET
 	@Path("/find/remark/{id}")
 	public List<Remark> findRemarkById(@PathParam("id")String id,@Context HttpServletRequest request) {
-		return service.findRemarkById(id,(Admin) SessionUtil.getUser(request));
+		return service.findRemarkById(id,null);
 	}
 
 	@DELETE
