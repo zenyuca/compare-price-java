@@ -187,6 +187,7 @@ public class ExportService {
                     ExportDetail detail = new ExportDetail();
                     detail.setExportId(exportId);
                     detail.setType(type);
+                    detail.setCreateTime(new Date());
                     detail.setAgentId(admin.getId());
                     detail.setAgentName(admin.getName());
                     HSSFRow row = sheet.getRow(j);

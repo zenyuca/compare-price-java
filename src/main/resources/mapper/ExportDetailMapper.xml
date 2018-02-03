@@ -26,18 +26,12 @@
 	</resultMap>
 
 	<select id="findTenderResult" resultMap="BaseResultMap">
-		SELECT
-			a.*,
-			b.endTime
-		FROM
-			bj_export_detail a,
-			bj_export b
-		WHERE
-			b.id = #{exportId} and 
-			exportId = #{exportId} AND a.agentId is not null <![CDATA[ AND a.agentId <>  '' ]]>
-			AND unitPrice = ( SELECT min( unitPrice ) FROM bj_export_detail WHERE num = a.num AND exportId = #{exportId})
-		GROUP BY a.num
-		ORDER BY
-			a.num
+		select t1.*,t3.endTime from bj_export_detail t1 inner join
+		(select a.num,min(a.createTime) createTime from bj_export_detail a inner join
+		(select num , min(unitPrice) unitPrice from bj_export_detail WHERE exportId = #{exportId}
+		 group by num) b
+		on a.num = b.num and a.unitPrice = b.unitPrice  GROUP BY a.num) t2 on t1.num = t2.num and t1.createTime =
+		t2.createTime inner join bj_export t3 ON t1.exportId = t3.id
+		ORDER BY t1.num ASC
 	</select>
 </mapper>

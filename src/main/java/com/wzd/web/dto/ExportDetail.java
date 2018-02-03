@@ -50,12 +50,22 @@ public class ExportDetail implements Serializable {
     private String agentId;
     private String remarks1;//备用字段
     private String remarks2;//备用字段
+    @Column(name = "createTime")
+    private Date createTime;
 
     @Transient
     private Date endTime;
 
     public Date getEndTime() {
         return endTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public void setEndTime(Date endTime) {
