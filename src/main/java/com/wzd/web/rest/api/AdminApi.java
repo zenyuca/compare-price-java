@@ -83,19 +83,19 @@ public class AdminApi {
 	@DELETE
 	@Path("/del/remark/{id}")
 	public void delRemarkById(@PathParam("id")String id, @Context HttpServletRequest request) {
-		service.delRemarkById(id,(Admin) SessionUtil.getUser(request));
+		service.delRemarkById(id,null);
 	}
 
 	@POST
 	@Path("/add/configure")
 	public void addConfigure(Configure configure, @Context HttpServletRequest request) {
-		service.addConfigure(configure,(Admin) SessionUtil.getUser(request));
+		service.addConfigure(configure,null);
 	}
 
 	@GET
 	@Path("/get/configure/{type}")
 	public Configure getConfigure(@PathParam("type")Integer type, @Context HttpServletRequest request) {
-		return service.getConfigure(type,(Admin) SessionUtil.getUser(request));
+		return service.getConfigure(type,null);
 	}
 
 }
