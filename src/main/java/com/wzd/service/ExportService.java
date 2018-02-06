@@ -185,10 +185,10 @@ public class ExportService {
             throw new WebException(ResponseCode.数据参数异常, "当前竞标已结束");
         }
         Example example = new Example(ExportDetail.class);
-        example.createCriteria().andEqualTo("exportId",exportId)
-                    .andEqualTo("agentId",admin.getId());
-        List<ExportDetail> list = detailDao.selectByExample(example);
-        if (list!=null && list.size() > 0){
+        example.createCriteria().andEqualTo("exportId", exportId)
+                .andEqualTo("agentId", admin.getId());
+        List<ExportDetail> exportDetailList = detailDao.selectByExample(example);
+        if (exportDetailList != null && exportDetailList.size() > 0) {
             throw new WebException(ResponseCode.数据参数异常, "请勿重复导入竞标文件");
         }
         FormDataBodyPart filePart = form.getField("file");
