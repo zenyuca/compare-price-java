@@ -131,6 +131,7 @@ public class ExportService {
     }
 
     public Object importExcel(Export export, HttpServletRequest request) {
+        Admin admin = (Admin)SessionUtil.getUser(request);
         Files files = export.getFiles();
         String path = FileUtil.BASE_PATH + files.getUrl().substring(files.getUrl().indexOf("userfiles"));
         File f = new File(path);
@@ -184,6 +185,8 @@ public class ExportService {
                         data.add(map);
                     }
                     if (j == 1 || detailCopy.getNum() == null || StringUtils.isBlank(detailCopy.getName())) continue;
+                    detailCopy.setAgentId(admin.getId());
+                    detailCopy.setAgentName(admin.getName());
                     list.add(detailCopy);
                 }
             }

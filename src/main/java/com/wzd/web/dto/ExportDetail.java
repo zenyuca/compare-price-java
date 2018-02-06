@@ -45,13 +45,14 @@ public class ExportDetail implements Serializable {
     private String url;
     private Integer type;
     @Column(name="agentName")
-    private String agentName;
+    private String agentName;   // 代理商名字
     @Column(name="agentId")
-    private String agentId;
+    private String agentId;     // 代理商id
     private String remarks1;//备用字段
     private String remarks2;//备用字段
     @Column(name = "createTime")
     private Date createTime;
+
 
     @Transient
     private Date endTime;
