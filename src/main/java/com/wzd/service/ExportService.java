@@ -264,7 +264,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -291,7 +291,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -318,7 +318,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -351,7 +351,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -384,7 +384,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -411,7 +411,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -438,7 +438,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
@@ -462,7 +462,7 @@ public class ExportService {
     public void setDataByTypeCopy4(Integer k, ExportDetailCopy detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setNum(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 1) detail.setCategory(cell.toString());
         if (k == 2) detail.setName(cell.toString());
