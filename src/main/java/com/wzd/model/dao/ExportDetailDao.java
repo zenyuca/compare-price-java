@@ -14,25 +14,25 @@ import java.util.List;
 
 @Component
 public class ExportDetailDao {
-	@Autowired
-	private ExportDetailMapper mapper;
+    @Autowired
+    private ExportDetailMapper mapper;
 
-	public List<ExportDetail> selectByExample(Example example){
-		return mapper.selectByExample(example);
-	}
+    public List<ExportDetail> selectByExample(Example example) {
+        return mapper.selectByExample(example);
+    }
 
-	public void createList(List<ExportDetail> details){
-		details.stream().forEach(d ->{
-			d.setId(UUIDUtil.get());
-		});
-		mapper.insertList(details);
-	}
+    public void createList(List<ExportDetail> details) {
+        details.stream().forEach(d -> {
+            d.setId(UUIDUtil.get());
+        });
+        mapper.insertList(details);
+    }
 
-	public int deleteByExample(Example example){
-		return mapper.deleteByExample(example);
-	}
+    public int deleteByExample(Example example) {
+        return mapper.deleteByExample(example);
+    }
 
-	public List<ExportDetail> findTenderResult(String exportId){
-		return mapper.findTenderResult(exportId);
-	}
+    public List<ExportDetail> findTenderResult(String exportId, String agentId) {
+        return mapper.findTenderResult(exportId, agentId);
+    }
 }

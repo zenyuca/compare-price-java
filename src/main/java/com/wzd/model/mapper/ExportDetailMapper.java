@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ExportDetailMapper extends MyMapper<ExportDetail> {
 
-    public List<ExportDetail> findTenderResult(@Param("exportId") String exportId);
+    public List<ExportDetail> findTenderResult(@Param("exportId") String exportId, @Param("agentId") String agentId);
 }

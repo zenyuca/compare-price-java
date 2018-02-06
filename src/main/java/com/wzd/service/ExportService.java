@@ -1,10 +1,8 @@
 package com.wzd.service;
 
-import com.wzd.model.dao.ExportDao;
-import com.wzd.model.dao.ExportDetailCopyDao;
-import com.wzd.model.dao.ExportDetailDao;
-import com.wzd.model.dao.FileDao;
+import com.wzd.model.dao.*;
 import com.wzd.model.entity.Files;
+import com.wzd.model.enums.RoleType;
 import com.wzd.utils.FileUtil;
 import com.wzd.utils.PoiExcelUtils;
 import com.wzd.web.dto.Admin;
@@ -46,6 +44,8 @@ public class ExportService {
     private ExportDetailCopyDao detailCopyDao;
     @Autowired
     private ExportDetailDao detailDao;
+    @Autowired
+    private AdminDao adminDao;
 
     public Export find(Integer type) {
 
@@ -69,16 +69,32 @@ public class ExportService {
         return result;
     }
 
-    public List<ExportDetail> findTenderResult(Integer type) {
+    public List<ExportDetail> findTenderResult(Integer type, String agentId) {
+        if (StringUtils.isBlank(agentId)) throw new WebException(ResponseCode.数据参数异常);
+        Admin admin = new Admin();
+        admin.setId(agentId);
+        admin = adminDao.selectOne(admin);
+        if (admin == null) {
+            throw new WebException(ResponseCode.数据参数异常);
+        }
+        if (RoleType.管理员.equals(admin.getRole())) agentId = "";
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
         example.createCriteria().andEqualTo("type", type);
         List<Export> exports = exportDao.selectByExample(example);
         if (exports == null || exports.size() < 1) return null;
-        return detailDao.findTenderResult(exports.get(0).getId());
+        return detailDao.findTenderResult(exports.get(0).getId(), agentId);
     }
 
-    public String exportTenderResult(Integer type) {
+    public String exportTenderResult(Integer type, String agentId) {
+        if (StringUtils.isBlank(agentId)) throw new WebException(ResponseCode.数据参数异常);
+        Admin admin = new Admin();
+        admin.setId(agentId);
+        admin = adminDao.selectOne(admin);
+        if (admin == null) {
+            throw new WebException(ResponseCode.数据参数异常);
+        }
+        if (RoleType.管理员.equals(admin.getRole())) agentId = "";
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
         example.createCriteria().andEqualTo("type", type);
@@ -86,7 +102,7 @@ public class ExportService {
         if (exports == null || exports.size() < 1) return null;
         String[] headers = new String[]{"序号@num", "名称@name", "规格@spec", "数量@number",
                 "单价@unitPrice", "供应商名称@agentName", "菜品要求@business", "实物图片@url", "备注@remark"};
-        String url = PoiExcelUtils.createExcel2FilePath("招标结果列表", "招标结果列表", FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId()));
+        String url = PoiExcelUtils.createExcel2FilePath("招标结果列表", "招标结果列表", FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId(), agentId));
         return url;
     }
 
@@ -143,7 +159,7 @@ public class ExportService {
                         }
                         data.add(map);
                     }
-                    if (j == 1|| detailCopy.getNum() == null) continue;
+                    if (j == 1 || detailCopy.getNum() == null) continue;
                     list.add(detailCopy);
                 }
             }
@@ -161,9 +177,13 @@ public class ExportService {
         if (type == null || StringUtils.isBlank(exportId)) {
             throw new WebException(ResponseCode.数据参数异常, "传入类型或导入id不存在");
         }
-        Example example = new Example(ExportDetail.class);
-        example.createCriteria().andEqualTo("exportId", exportId);
-//        detailDao.deleteByExample(example);// 删除之前存在的，对应exportId
+        Export export = new Export();
+        export.setId(exportId);
+        export = exportDao.selectOne(export);
+        if (export == null) throw new WebException(ResponseCode.数据参数异常, "还未开始竞标，或对应竞标不存在");
+        if (export.getEndTime().getTime() < System.currentTimeMillis()) {
+            throw new WebException(ResponseCode.数据参数异常, "当前竞标已结束");
+        }
         FormDataBodyPart filePart = form.getField("file");
         if (form.getField("type") != null) {
             type = form.getField("type").getValueAs(Integer.class);

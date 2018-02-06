@@ -69,19 +69,19 @@ public class ExportApi {
 	/**
 	 * 根据类型查询投标结果
 	 */
-	@GET
+	@POST
 	@Path("/find/tender/result/{type}")
-	public List<ExportDetail> findTenderResult(@PathParam("type")Integer type, @Context HttpServletRequest request) {
-		return service.findTenderResult(type);
+	public List<ExportDetail> findTenderResult(@PathParam("type")Integer type, String agentId) {
+		return service.findTenderResult(type,agentId);
 	}
 
 	/**
 	 * 根据类型导出投标结果
 	 */
-	@GET
+	@POST
 	@Path("/export/tender/result/{type}")
-	public String exportTenderResult(@PathParam("type")Integer type, @Context HttpServletRequest request) {
-		return service.exportTenderResult(type);
+	public String exportTenderResult(@PathParam("type")Integer type, String agentId) {
+		return service.exportTenderResult(type,agentId);
 	}
 
 }

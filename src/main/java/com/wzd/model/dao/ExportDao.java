@@ -28,4 +28,9 @@ public class ExportDao {
         export.setDeleted(DeleteType.未删除.getValue());
         mapper.insert(export);
     }
+
+    public Export selectOne(Export export) {
+        return mapper.selectOne(export);
+    }
+
 }
