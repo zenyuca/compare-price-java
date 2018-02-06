@@ -77,7 +77,7 @@ public class ExportService {
         if (admin == null) {
             throw new WebException(ResponseCode.数据参数异常);
         }
-        if (RoleType.管理员.equals(admin.getRole())) agentId = "";
+        if (RoleType.管理员.getValue().equals(admin.getRole())) agentId = "";
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
         example.createCriteria().andEqualTo("type", type);
@@ -183,6 +183,13 @@ public class ExportService {
         if (export == null) throw new WebException(ResponseCode.数据参数异常, "还未开始竞标，或对应竞标不存在");
         if (export.getEndTime().getTime() < System.currentTimeMillis()) {
             throw new WebException(ResponseCode.数据参数异常, "当前竞标已结束");
+        }
+        Example example = new Example(ExportDetail.class);
+        example.createCriteria().andEqualTo("exportId",exportId)
+                    .andEqualTo("agentId",admin.getId());
+        List<ExportDetail> list = detailDao.selectByExample(example);
+        if (list!=null && list.size() > 0){
+            throw new WebException(ResponseCode.数据参数异常, "请勿重复导入竞标文件");
         }
         FormDataBodyPart filePart = form.getField("file");
         if (form.getField("type") != null) {
@@ -462,7 +469,7 @@ public class ExportService {
     public void setDataByTypeCopy4(Integer k, ExportDetailCopy detail, HSSFCell cell) {
         if (k == 0) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setNum(Double.parseDouble(df.format(cell.getNumericCellValue())));
+            detail.setNum(Integer.parseInt(df.format(cell.getNumericCellValue())));
         }
         if (k == 1) detail.setCategory(cell.toString());
         if (k == 2) detail.setName(cell.toString());
@@ -471,7 +478,7 @@ public class ExportService {
         if (k == 5) detail.setBusiness(cell.toString());
         if (k == 6) {
             DecimalFormat df = new DecimalFormat("0");
-            detail.setUnitPrice(Integer.parseInt(df.format(cell.getNumericCellValue())));
+            detail.setUnitPrice(Double.parseDouble(df.format(cell.getNumericCellValue())));
         }
         if (k == 7) {
             DecimalFormat df = new DecimalFormat("0");
