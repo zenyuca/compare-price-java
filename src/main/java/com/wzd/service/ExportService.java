@@ -159,7 +159,7 @@ public class ExportService {
                         }
                         data.add(map);
                     }
-                    if (j == 1 || detailCopy.getNum() == null) continue;
+                    if (j == 1 || detailCopy.getNum() == null || StringUtils.isBlank(detailCopy.getName())) continue;
                     list.add(detailCopy);
                 }
             }
@@ -234,7 +234,7 @@ public class ExportService {
                         }
                         data.add(map);
                     }
-                    if (j == 1 || detail.getNum() == null) continue;
+                    if (j == 1 || detail.getNum() == null || StringUtils.isBlank(detail.getName())) continue;
                     list.add(detail);
                 }
             }
