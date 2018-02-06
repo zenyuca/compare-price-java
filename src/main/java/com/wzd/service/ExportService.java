@@ -52,20 +52,44 @@ public class ExportService {
         return null;
     }
 
-    public Map findDetailCopyByType(Integer type) {
+    public Map findDetailCopyByType(Integer type, Admin admin) {
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
         example.createCriteria().andEqualTo("type", type);
         List<Export> exports = exportDao.selectByExample(example);
         if (exports == null || exports.size() < 1) return null;
-        example = new Example(ExportDetailCopy.class);
-        example.setOrderByClause("num ASC");
-        example.createCriteria().andEqualTo("exportId", exports.get(0).getId());
+        List<Object> data = new ArrayList<>();
+        if (RoleType.管理员.getValue().equals(admin.getRole())) {
+            example = new Example(ExportDetailCopy.class);
+            example.setOrderByClause("num ASC");
+            example.createCriteria().andEqualTo("exportId", exports.get(0).getId());
+            detailCopyDao.selectByExample(example).forEach(d -> {
+                data.add(d);
+            });
+        } else if (RoleType.代理商.getValue().equals(admin.getRole())) {
+            example = new Example(ExportDetail.class);
+            example.setOrderByClause("num ASC");
+            example.createCriteria().andEqualTo("exportId", exports.get(0).getId())
+                    .andEqualTo("agentId", admin.getId());
+            List<ExportDetail> details = detailDao.selectByExample(example);
+            if (details != null && details.size() > 0) {
+                details.forEach(d -> {
+                    data.add(d);
+                });
+            } else {
+                example = new Example(ExportDetailCopy.class);
+                example.setOrderByClause("num ASC");
+                example.createCriteria().andEqualTo("exportId", exports.get(0).getId());
+                detailCopyDao.selectByExample(example).forEach(d -> {
+                    data.add(d);
+                });
+            }
+        }
         Map<String, Object> result = new HashMap<>();
         result.put("exportId", exports.get(0).getId());
         result.put("downUrl", exports.get(0).getUrl());
         result.put("endTime", exports.get(0).getEndTime());
-        result.put("data", detailCopyDao.selectByExample(example));
+        result.put("data", data);
         return result;
     }
 
