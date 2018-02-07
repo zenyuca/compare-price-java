@@ -124,14 +124,26 @@ public class ExportService {
         example.createCriteria().andEqualTo("type", type);
         List<Export> exports = exportDao.selectByExample(example);
         if (exports == null || exports.size() < 1) return null;
-        String[] headers = new String[]{"序号@num", "名称@name", "规格@spec", "数量@number",
-                "单价@unitPrice", "供应商名称@agentName", "菜品要求@business", "实物图片@url", "备注@remark"};
-        String url = PoiExcelUtils.createExcel2FilePath("招标结果列表", "招标结果列表", FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId(), agentId));
+        String[] headers = null;
+        String title = null;
+        if (type == 1 || type == 2) {
+            headers = new String[]{"序号@num", "类别@category", "名称@name", "规格@spec", "单 位@unit", "供应商名称@agentName",
+                    "报价(元)@unitPrice", "数量@number", "备注@remark", "实物图片@url", "备注1@remarks1", "备注2@remarks2"};
+            if (type == 1) title = "蔬菜类投标结果";
+            if (type == 2) title = "肉类投标结果";
+        } else if (type == 3 || type == 4) {
+            headers = new String[]{"序号@num", "类别@category", "名称@name", "规格@spec", "单 位@unit", "供应商名称@agentName",
+                    "单 价@unitPrice", "数量@number", "等级@level", "出厂包装规格@spec2", "产品条码@barCode", "生产厂家@manufacturer", "出产地@placeOfOrigin",
+                    "备注@remark", "食堂内部产品编号@serialNumber", "实物图片@url", "备注1@remarks1", "备注2@remarks2"};
+            if (type == 3) title = "干杂类投标结果";
+            if (type == 4) title = "水产类投标结果";
+        }
+        String url = PoiExcelUtils.createExcel2FilePath("招标结果列表", title, FileUtil.BASE_PATH, headers, detailDao.findTenderResult(exports.get(0).getId(), agentId));
         return url;
     }
 
     public Object importExcel(Export export, HttpServletRequest request) {
-        Admin admin = (Admin)SessionUtil.getUser(request);
+        Admin admin = (Admin) SessionUtil.getUser(request);
         Files files = export.getFiles();
         String path = FileUtil.BASE_PATH + files.getUrl().substring(files.getUrl().indexOf("userfiles"));
         File f = new File(path);
