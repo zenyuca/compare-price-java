@@ -118,7 +118,7 @@ public class ExportService {
         if (admin == null) {
             throw new WebException(ResponseCode.数据参数异常);
         }
-        if (RoleType.管理员.equals(admin.getRole())) agentId = "";
+        if (RoleType.管理员.getValue().equals(admin.getRole())) agentId = "";
         Example example = new Example(Export.class);
         example.setOrderByClause("createTime DESC");
         example.createCriteria().andEqualTo("type", type);
