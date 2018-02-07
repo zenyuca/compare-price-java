@@ -38,6 +38,7 @@
 		group by num) b
 		on a.num = b.num and a.unitPrice = b.unitPrice inner join bj_export t ON t.id = a.exportId
 		WHERE 1=1
+		AND a.exportId = #{exportId}
 		<if test="agentId != null and agentId != ''">
 			AND a.agentId = #{agentId}
 		</if>
