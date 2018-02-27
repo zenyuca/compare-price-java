@@ -281,6 +281,7 @@ public class ExportService {
                         data.add(map);
                     }
                     if (j == 1 || detail.getNum() == null || StringUtils.isBlank(detail.getName())) continue;
+                    if (detail.getUnitPrice() == null || detail.getUnitPrice() == 0.00) continue;
                     list.add(detail);
                 }
             }

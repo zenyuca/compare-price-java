@@ -26,7 +26,7 @@ public class ExportDetail implements Serializable {
     private String unit;
     private String business;
     @Column(name = "unitPrice")
-    private double unitPrice;
+    private Double unitPrice;
     @Column(name = "number")
     private Integer number;
     private String level;
@@ -153,11 +153,11 @@ public class ExportDetail implements Serializable {
         this.business = business;
     }
 
-    public double getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 

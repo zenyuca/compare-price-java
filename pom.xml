@@ -293,7 +293,7 @@
 					<stopKey>stop</stopKey>
 					<stopWait>10</stopWait>
 					<httpConnector>
-						<port>8088</port>
+						<port>8089</port>
 					</httpConnector>
 					<webApp>
 						<contextPath>/</contextPath>
